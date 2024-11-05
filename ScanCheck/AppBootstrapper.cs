@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using ScanCheck.Import;
 using ScanCheck.ViewModels;
 using System.Reflection;
 using System.Windows;
@@ -22,6 +23,8 @@ namespace ScanCheck
             container.Singleton<IEventAggregator, EventAggregator>();
 
             container.Singleton<MainViewModel>();
+
+            container.Singleton<ImageImporter>();
         }
 
         protected override object GetInstance(Type service, string key)
