@@ -5,12 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScanCheck.Views"
         xmlns:conv="clr-namespace:ScanCheck.Converters"
+        xmlns:contr="clr-namespace:ScanCheck.Controls"
         mc:Ignorable="d"
         Title="ScanCheck" TitleCharacterCasing="Normal" Height="450" Width="800">
     <metro:MetroWindow.Resources>
         <conv:EmptyStringToBooleanConverter x:Key="EmptyStringToBooleanConverter" Invert="False" />
         <conv:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter" Invert="False" UseHidden="False" />
-
+        <contr:ScrollableImageGallery x:Key="ScrollableImageGallery" />
     </metro:MetroWindow.Resources>
     <DockPanel>
 
@@ -25,41 +26,20 @@
             <Button x:Name="BrowseFolder" Grid.Column="2" Margin="5,0,0,0">...</Button>
         </Grid>
 
-
-        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" VerticalAlignment="Center" Margin="5">
-            <Button x:Name="PreviousCarousel" Content="◀" IsEnabled="{Binding CarouselImages, Converter={StaticResource EmptyStringToBooleanConverter}, UpdateSourceTrigger=PropertyChanged}" />
-
-            <ItemsControl ItemsSource="{Binding CarouselImages}" Margin="5" MaxHeight="100">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border Margin="5" BorderThickness="2" Width="75" Height="75">
-                            <Image Source="{Binding Path}" Stretch="UniformToFill"/>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-
-            <Button x:Name="NextCarousel" Content="▶" IsEnabled="{Binding CarouselImages, Converter={StaticResource EmptyStringToBooleanConverter},UpdateSourceTrigger=PropertyChanged}" />
-        </StackPanel>
-
+        <contr:ScrollableImageGallery DockPanel.Dock="Bottom" Images="{Binding Images}" />
+        
         <Grid  Margin="5" Visibility="{Binding SelectedFolderPath, Converter={StaticResource EmptyStringToVisibilityConverter}}" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Margin="0,0,10,0" IsEnabled="{Binding LeftImage}" Style="{StaticResource MahApps.Styles.Button}">
+            <Button x:Name="LeftImageSelected" Grid.Column="0" Margin="0,0,10,0"  Style="{StaticResource MahApps.Styles.Button}">
                 <Button.Content>
                     <Image Source="{Binding LeftImage.Path}" Stretch="UniformToFill"/>
                 </Button.Content>
             </Button>
 
-            <Button Grid.Column="1" IsEnabled="{Binding RightImage}" Style="{StaticResource MahApps.Styles.Button}">
+            <Button x:Name="RightImageSelected" Grid.Column="1" Style="{StaticResource MahApps.Styles.Button}">
                 <Button.Content>
                     <Image Source="{Binding RightImage.Path}" Stretch="UniformToFill"/>
                 </Button.Content>

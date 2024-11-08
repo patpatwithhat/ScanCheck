@@ -9,7 +9,6 @@ namespace ScanCheck.ViewModels
     {
         private readonly ImageImporter _imageImporter;
         private int _carouselStartIndex;
-        private const int CarouselDisplayCount = 10;
 
         #region Properties
         private string? _selectedFolderPath;
@@ -34,7 +33,6 @@ namespace ScanCheck.ViewModels
                 NotifyOfPropertyChange();
                 NotifyOfPropertyChange(() => LeftImage);
                 NotifyOfPropertyChange(() => RightImage);
-                NotifyOfPropertyChange(() => CarouselImages);
             }
         }
 
@@ -42,10 +40,6 @@ namespace ScanCheck.ViewModels
         public ImageFile? LeftImage => Images?.Count > 0 ? Images[0] : null;
         public ImageFile? RightImage => Images?.Count > 1 ? Images[1] : null;
 
-        public IEnumerable<ImageFile>? CarouselImages
-        {
-            get => Images?.Skip(_carouselStartIndex).Take(CarouselDisplayCount);
-        }
         #endregion
 
         public MainViewModel(ImageImporter imageImporter)
@@ -69,23 +63,17 @@ namespace ScanCheck.ViewModels
             }
         }
 
-        public void NextCarousel()
+        public void LeftImageSelected()
         {
-            if (_carouselStartIndex + CarouselDisplayCount < Images.Count)
-            {
-                _carouselStartIndex++;
-                NotifyOfPropertyChange(nameof(CarouselImages));
-            }
+            LeftImage.IsSelected = !LeftImage.IsSelected;
         }
 
-        public void PreviousCarousel()
+        public void RightImageSelected()
         {
-            if (_carouselStartIndex > 0)
-            {
-                _carouselStartIndex--;
-                NotifyOfPropertyChange(nameof(CarouselImages));
-            }
+            RightImage.IsSelected = !RightImage.IsSelected;
+
         }
+
         #endregion
 
         #region Helpers
