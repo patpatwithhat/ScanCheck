@@ -36,15 +36,61 @@ namespace ScanCheck.ViewModels
             }
         }
 
+        private int _leftImageIndex;
+        private int _rightImageIndex;
 
-        public ImageFile? LeftImage => Images?.Count > 0 ? Images[0] : null;
-        public ImageFile? RightImage => Images?.Count > 1 ? Images[1] : null;
+        private ImageFile? _leftImage;
+
+        public ImageFile? LeftImage
+        {
+            get { return _leftImage; }
+            set
+            {
+                _leftImage = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        private ImageFile? _rightImage;
+
+        public ImageFile? RightImage
+        {
+            get { return _rightImage; }
+            set
+            {
+                _rightImage = value;
+                NotifyOfPropertyChange();
+            }
+        }
 
         #endregion
 
         public MainViewModel(ImageImporter imageImporter)
         {
             _imageImporter = imageImporter;
+#if DEBUG
+            SelectedFolderPath = "C:\\Users\\vicky\\source\\repos\\ScanCheck\\ScanCheck\\Assets";
+            LoadImages();
+            SetInitialImages();
+#endif
+        }
+
+        private void SetInitialImages()
+        {
+            if (Images == null || Images.Count == 0)
+                return;
+            if (Images.Count >= 1)
+            {
+                _leftImageIndex = 0;
+                LeftImage = Images[_leftImageIndex];
+                LeftImage.IsSelected = true;
+            }
+            if (Images.Count >= 2)
+            {
+                _rightImageIndex = 1;
+                RightImage = Images[_rightImageIndex];
+                RightImage.IsSelected = true;
+            }
         }
 
         #region Button Actions
@@ -65,12 +111,21 @@ namespace ScanCheck.ViewModels
 
         public void LeftImageSelected()
         {
-            LeftImage.IsSelected = !LeftImage.IsSelected;
+            //left image stays
+            //right image gets set to the next image
+            RightImage.IsSelected = false;
+            RightImage = Images[_rightImageIndex++];
+            RightImage.IsSelected = true;
         }
 
         public void RightImageSelected()
         {
-            RightImage.IsSelected = !RightImage.IsSelected;
+            //left images gets overwritten with current right
+            //right image gets set to the next image
+            LeftImage.IsSelected = false;
+            LeftImage = RightImage;
+            RightImage = Images[_rightImageIndex++];
+            RightImage.IsSelected = true;
 
         }
 

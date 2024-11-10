@@ -35,13 +35,19 @@
             </Grid.ColumnDefinitions>
             <Button x:Name="LeftImageSelected" Grid.Column="0" Margin="0,0,10,0"  Style="{StaticResource MahApps.Styles.Button}">
                 <Button.Content>
-                    <Image Source="{Binding LeftImage.Path}" Stretch="UniformToFill"/>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock>Keep this one</TextBlock>
+                        <Image Source="{Binding LeftImage.Path}" Stretch="UniformToFill"/>
+                    </StackPanel>
                 </Button.Content>
             </Button>
 
             <Button x:Name="RightImageSelected" Grid.Column="1" Style="{StaticResource MahApps.Styles.Button}">
                 <Button.Content>
-                    <Image Source="{Binding RightImage.Path}" Stretch="UniformToFill"/>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock>Keep this one</TextBlock>
+                        <Image Source="{Binding RightImage.Path}" Stretch="UniformToFill"/>
+                    </StackPanel>
                 </Button.Content>
             </Button>
         </Grid>
