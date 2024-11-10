@@ -36,8 +36,7 @@ namespace ScanCheck.ViewModels
             }
         }
 
-        private int _leftImageIndex;
-        private int _rightImageIndex;
+        private int _imageIndex = 0;
 
         private ImageFile? _leftImage;
 
@@ -81,14 +80,12 @@ namespace ScanCheck.ViewModels
                 return;
             if (Images.Count >= 1)
             {
-                _leftImageIndex = 0;
-                LeftImage = Images[_leftImageIndex];
+                LeftImage = Images[_imageIndex];
                 LeftImage.IsSelected = true;
             }
             if (Images.Count >= 2)
             {
-                _rightImageIndex = 1;
-                RightImage = Images[_rightImageIndex];
+                RightImage = Images[++_imageIndex];
                 RightImage.IsSelected = true;
             }
         }
@@ -111,22 +108,42 @@ namespace ScanCheck.ViewModels
 
         public void LeftImageSelected()
         {
-            //left image stays
-            //right image gets set to the next image
+            if (RightImage == null || Images == null)
+                return;
+
+            _imageIndex++;
+            if (IsLastImage())
+            {
+                ShowSelectedImageDialog();
+                return;
+            }
+
             RightImage.IsSelected = false;
-            RightImage = Images[_rightImageIndex++];
+            RightImage = Images[_imageIndex];
             RightImage.IsSelected = true;
+        }
+
+        private void ShowSelectedImageDialog()
+        {
+            throw new NotImplementedException();
         }
 
         public void RightImageSelected()
         {
-            //left images gets overwritten with current right
-            //right image gets set to the next image
+            if (LeftImage == null || Images == null)
+                return;
+
+            _imageIndex++;
+            if (IsLastImage())
+            {
+                ShowSelectedImageDialog();
+                return;
+            }
+
             LeftImage.IsSelected = false;
             LeftImage = RightImage;
-            RightImage = Images[_rightImageIndex++];
+            RightImage = Images[_imageIndex];
             RightImage.IsSelected = true;
-
         }
 
         #endregion
@@ -138,6 +155,11 @@ namespace ScanCheck.ViewModels
             {
                 Images = _imageImporter.LoadImages(SelectedFolderPath);
             }
+        }
+
+        private bool IsLastImage()
+        {
+            return Images?.Count == _imageIndex;
         }
         #endregion
     }
