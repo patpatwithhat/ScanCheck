@@ -68,7 +68,7 @@ namespace ScanCheck.ViewModels
         {
             _imageImporter = imageImporter;
 #if DEBUG
-            SelectedFolderPath = "C:\\Users\\vicky\\source\\repos\\ScanCheck\\ScanCheck\\Assets";
+            SelectedFolderPath = "C:\\Users\\kuest\\source\\repos\\ScanCheck\\ScanCheck\\Assets";
             LoadImages();
             SetInitialImages();
 #endif
@@ -78,6 +78,7 @@ namespace ScanCheck.ViewModels
         {
             if (Images == null || Images.Count == 0)
                 return;
+            _imageIndex = 0;
             if (Images.Count >= 1)
             {
                 LeftImage = Images[_imageIndex];
@@ -103,6 +104,7 @@ namespace ScanCheck.ViewModels
             {
                 SelectedFolderPath = dialog.FileName;
                 LoadImages();
+                SetInitialImages();
             }
         }
 
@@ -125,7 +127,11 @@ namespace ScanCheck.ViewModels
 
         private void ShowSelectedImageDialog()
         {
-            throw new NotImplementedException();
+            // Show dialog with the last selected image and ask if the user wants to save it
+            var dialog = new SelectImageDialogViewModel(LeftImage);
+            var windowManager = new WindowManager();
+            windowManager.ShowDialogAsync(dialog);
+
         }
 
         public void RightImageSelected()
@@ -145,7 +151,6 @@ namespace ScanCheck.ViewModels
             RightImage = Images[_imageIndex];
             RightImage.IsSelected = true;
         }
-
         #endregion
 
         #region Helpers
@@ -159,7 +164,7 @@ namespace ScanCheck.ViewModels
 
         private bool IsLastImage()
         {
-            return Images?.Count == _imageIndex;
+            return Images?.Count <= _imageIndex;
         }
         #endregion
     }
