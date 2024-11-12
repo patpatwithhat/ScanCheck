@@ -21,11 +21,11 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border Margin="5" BorderBrush="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToBrushConverter}}" BorderThickness="5" Width="75" Height="75">
+                        <Border Margin="5" BorderBrush="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToBrushConverter}}" BorderThickness="5" Width="75" Height="75"
+                                MouseLeftButtonDown="Image_MouseLeftButtonDown">
                             <Image Source="{Binding Path}" Stretch="UniformToFill" />
                         </Border>
                     </DataTemplate>
-
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>

@@ -45,7 +45,14 @@ namespace ScanCheck.ViewModels
             get { return _leftImage; }
             set
             {
+                if (_leftImage != null)
+                    _leftImage.IsSelected = false;
+
                 _leftImage = value;
+
+                if (_leftImage != null)
+                    _leftImage.IsSelected = true;
+
                 NotifyOfPropertyChange();
             }
         }
@@ -57,7 +64,14 @@ namespace ScanCheck.ViewModels
             get { return _rightImage; }
             set
             {
+                if (_rightImage != null)
+                    _rightImage.IsSelected = false;
+
                 _rightImage = value;
+
+                if (_rightImage != null)
+                    _rightImage.IsSelected = true;
+
                 NotifyOfPropertyChange();
             }
         }
@@ -82,12 +96,10 @@ namespace ScanCheck.ViewModels
             if (Images.Count >= 1)
             {
                 LeftImage = Images[_imageIndex];
-                LeftImage.IsSelected = true;
             }
             if (Images.Count >= 2)
             {
                 RightImage = Images[++_imageIndex];
-                RightImage.IsSelected = true;
             }
         }
 
@@ -120,9 +132,7 @@ namespace ScanCheck.ViewModels
                 return;
             }
 
-            RightImage.IsSelected = false;
             RightImage = Images[_imageIndex];
-            RightImage.IsSelected = true;
         }
 
         private void ShowSelectedImageDialog()
@@ -145,11 +155,9 @@ namespace ScanCheck.ViewModels
                 ShowSelectedImageDialog();
                 return;
             }
-
-            LeftImage.IsSelected = false;
-            LeftImage = RightImage;
+            var tempImage = RightImage;
             RightImage = Images[_imageIndex];
-            RightImage.IsSelected = true;
+            LeftImage = tempImage;
         }
         #endregion
 

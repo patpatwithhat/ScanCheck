@@ -1,6 +1,7 @@
 ﻿using ScanCheck.Entities;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace ScanCheck.Controls
 {
@@ -14,6 +15,7 @@ namespace ScanCheck.Controls
             InitializeComponent();
         }
 
+        #region Dependency Properties
         public static readonly DependencyProperty ImagesProperty =
             DependencyProperty.Register("Images", typeof(IEnumerable<ImageFile>), typeof(ScrollableImageGallery),
                 new PropertyMetadata(null));
@@ -24,5 +26,27 @@ namespace ScanCheck.Controls
             set => SetValue(ImagesProperty, value);
         }
 
+        public static readonly DependencyProperty SelectedImageProperty =
+            DependencyProperty.Register("SelectedImage", typeof(ImageFile), typeof(ScrollableImageGallery),
+                new PropertyMetadata(null));
+
+        public ImageFile SelectedImage
+        {
+            get => (ImageFile)GetValue(SelectedImageProperty);
+            set => SetValue(SelectedImageProperty, value);
+        }
+        #endregion
+
+        #region Event Handlers
+
+        private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is Border border && border.DataContext is ImageFile selectedImage)
+            {
+                SelectedImage = selectedImage;
+
+            }
+        }
+        #endregion
     }
 }
