@@ -10,7 +10,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
 
                 <!-- MahApps.Theme Light or Dark -->
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Dark.Orange.xaml" />
 
                 <ResourceDictionary>
                     <local:AppBootstrapper x:Key="bootstrapper" />

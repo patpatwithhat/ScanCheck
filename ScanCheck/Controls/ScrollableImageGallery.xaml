@@ -6,24 +6,29 @@
              xmlns:conv="clr-namespace:ScanCheck.Converters"
              xmlns:local="clr-namespace:ScanCheck.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="150" d:DesignWidth="400">
+             d:DesignHeight="100" d:DesignWidth="400" MinHeight="100">
 
     <UserControl.Resources>
-        <conv:BoolToBrushConverter x:Key="BoolToBrushConverter" />
+        <conv:SelectionStatesToBrushConverter x:Key="SelectionStatesToBrushConverter" />
+        <conv:SelectionStatesToVisabilityConverter x:Key="SelectionStatesToVisabilityConverter" />
+        <conv:SelectionStateToWidthHeightConverter x:Key="SelectionStateToWidthHeightConverter"/>
     </UserControl.Resources>
-    <Border BorderBrush="Gray" BorderThickness="1" Padding="5">
+    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="2">
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
             <ItemsControl ItemsSource="{Binding Images}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel IsItemsHost="True" Orientation="Horizontal" />
+                        <WrapPanel IsItemsHost="True" Orientation="Horizontal" 
+                                   Margin="7.5,0"/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border Margin="5" BorderBrush="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToBrushConverter}}" BorderThickness="5" Width="75" Height="75"
-                                MouseLeftButtonDown="Image_MouseLeftButtonDown">
-                            <Image Source="{Binding Path}" Stretch="UniformToFill" />
+                        <Border Margin="2.5,5" BorderBrush="{Binding SelectionState,UpdateSourceTrigger=PropertyChanged, Converter={StaticResource SelectionStatesToBrushConverter}}"
+                                BorderThickness="3" Width="{Binding SelectionState, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource SelectionStateToWidthHeightConverter}}"
+                                Height="{Binding SelectionState, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource SelectionStateToWidthHeightConverter}}" CornerRadius="2"
+                                MouseLeftButtonDown="Image_MouseLeftButtonDown" Visibility="{Binding SelectionState, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource SelectionStatesToVisabilityConverter}}">
+                            <Image Source="{Binding Path}" Stretch="UniformToFill" Visibility="{Binding SelectionState, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource SelectionStatesToVisabilityConverter}}"/>
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

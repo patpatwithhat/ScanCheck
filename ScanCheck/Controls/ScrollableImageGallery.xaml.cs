@@ -26,6 +26,11 @@ namespace ScanCheck.Controls
             set => SetValue(ImagesProperty, value);
         }
 
+        public IEnumerable<ImageFile>? DisplayedImages
+        {
+            get => Images?.Where(i => i.SelectionState != ImageFile.SelectionStates.NotSelected);
+        }
+
         public static readonly DependencyProperty SelectedImageProperty =
             DependencyProperty.Register("SelectedImage", typeof(ImageFile), typeof(ScrollableImageGallery),
                 new PropertyMetadata(null));
@@ -44,7 +49,6 @@ namespace ScanCheck.Controls
             if (sender is Border border && border.DataContext is ImageFile selectedImage)
             {
                 SelectedImage = selectedImage;
-
             }
         }
         #endregion

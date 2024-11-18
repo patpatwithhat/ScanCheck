@@ -1,56 +1,104 @@
-﻿<metro:MetroWindow  xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls" x:Class="ScanCheck.Views.MainView"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ScanCheck.Views"
-        xmlns:conv="clr-namespace:ScanCheck.Converters"
-        xmlns:contr="clr-namespace:ScanCheck.Controls"
-                    xmlns:cal="http://www.caliburnproject.org"
-        mc:Ignorable="d"
-        Title="ScanCheck" TitleCharacterCasing="Normal" Height="450" Width="800">
+﻿<metro:MetroWindow xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls" 
+                   x:Class="ScanCheck.Views.MainView"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:conv="clr-namespace:ScanCheck.Converters"
+                   xmlns:contr="clr-namespace:ScanCheck.Controls"
+                   mc:Ignorable="d"
+                   Title="ScanCheck" 
+                   TitleCharacterCasing="Normal" 
+                   Background="AliceBlue"
+                   Height="450" 
+                   Width="800"
+                   WindowStartupLocation="CenterScreen">
     <metro:MetroWindow.Resources>
         <conv:EmptyStringToBooleanConverter x:Key="EmptyStringToBooleanConverter" Invert="False" />
         <conv:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter" Invert="False" UseHidden="False" />
         <contr:ScrollableImageGallery x:Key="ScrollableImageGallery" />
+        <conv:AspectRatioToWidthConverter x:Key="AspectRatioToWidthConverter" />
     </metro:MetroWindow.Resources>
-    <DockPanel>
 
-        <Grid  DockPanel.Dock="Top" Margin="5" >
+    <DockPanel>
+        <Grid DockPanel.Dock="Top" Margin="10"  >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="80"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="160"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" VerticalAlignment="Center">Select Folder:</TextBlock>
-            <TextBox Text="{Binding SelectedFolderPath}"  Grid.Column="1"></TextBox>
-            <Button x:Name="BrowseFolder" Grid.Column="2" Margin="5,0,0,0">...</Button>
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Foreground="Black" FontWeight="Bold">Select Folder:</TextBlock>
+            <TextBox Text="{Binding SelectedFolderPath}" IsReadOnly="True" Grid.Column="1" Margin="5" Foreground ="Black" Background="White" Style="{StaticResource MahApps.Styles.TextBox}"/>
+            <Button x:Name="BrowseFolder" Grid.Column="2" Margin="5,0,0,0" Style="{StaticResource MahApps.Styles.Button}" Content="..." />
+            <Button x:Name="SaveImage" Grid.Column="3" Margin="25,0,0,0" Style="{StaticResource MahApps.Styles.Button}" Content="Save Selected Image" metro:ControlsHelper.ContentCharacterCasing="Normal"/>
+        </Grid>
+        
+        <Grid DockPanel.Dock="Bottom" Margin="10,2" >
+            <TextBlock x:Name="InfoText" HorizontalAlignment="Right" Foreground="Black" />
+        </Grid>
+            
+        <Grid DockPanel.Dock="Bottom" Margin="10,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Selected Image:" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+            <Image Grid.Row="1" Grid.Column="0"  Width="100" Height="100" Source="{Binding LeftImage.Path}" />
+            <contr:ScrollableImageGallery Grid.Row="1" Grid.Column="1" Images="{Binding Images}" SelectedImage="{Binding RightImage, Mode=TwoWay}" />
         </Grid>
 
-        <contr:ScrollableImageGallery DockPanel.Dock="Bottom" Images="{Binding Images}" SelectedImage="{Binding RightImage, Mode=TwoWay}" />
-
-        <Grid  Margin="5" Visibility="{Binding SelectedFolderPath, Converter={StaticResource EmptyStringToVisibilityConverter}}" >
+        <Grid Margin="10" Visibility="{Binding SelectedFolderPath, Converter={StaticResource EmptyStringToVisibilityConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
+                <ColumnDefinition Width="10"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="LeftImageSelected" Grid.Column="0" Margin="0,0,10,0"  Style="{StaticResource MahApps.Styles.Button}">
-                <Button.Content>
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock>Keep this one</TextBlock>
-                        <Image Source="{Binding LeftImage.Path}" Stretch="UniformToFill"/>
-                    </StackPanel>
-                </Button.Content>
-            </Button>
 
-            <Button x:Name="RightImageSelected" Grid.Column="1" Style="{StaticResource MahApps.Styles.Button}">
-                <Button.Content>
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock>Keep this one</TextBlock>
-                        <Image Source="{Binding RightImage.Path}" Stretch="UniformToFill"/>
-                    </StackPanel>
-                </Button.Content>
-            </Button>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+
+            <Image Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">
+                <Image.Width>
+                    <MultiBinding Converter="{StaticResource AspectRatioToWidthConverter}">
+                        <Binding Path="LeftImage.Height" />
+                        <Binding Path="LeftImage.Width" />
+                        <Binding Path="ActualHeight" RelativeSource="{RelativeSource AncestorType=Grid}" />
+                    </MultiBinding>
+                </Image.Width>
+                <Image.Source>
+                    <Binding Path="LeftImage.Path" />
+                </Image.Source>
+            </Image>
+
+            <Image  Grid.Row="0" Grid.Column="3" VerticalAlignment="Center">
+                <Image.Width>
+                    <MultiBinding Converter="{StaticResource AspectRatioToWidthConverter}">
+                        <Binding Path="RightImage.Height" />
+                        <Binding Path="RightImage.Width" />
+                        <Binding Path="ActualHeight" RelativeSource="{RelativeSource AncestorType=Grid}" />
+                    </MultiBinding>
+                </Image.Width>
+                <Image.Source>
+                    <Binding Path="RightImage.Path" />
+                </Image.Source>
+            </Image>
+
+            <Button x:Name="LeftImageSelected" Grid.Row="2" Grid.Column="0" Content="Keep this one" 
+                    Foreground="White" FontWeight="Bold" HorizontalAlignment="Center" 
+                    Margin="5" Padding="10" metro:ControlsHelper.ContentCharacterCasing="Normal"/>
+
+            <Button x:Name="RightImageSelected" Grid.Row="1" Grid.Column="2"  Content="Keep this one" 
+                    Foreground="White" FontWeight="Bold" HorizontalAlignment="Center" 
+                     Margin="5" Padding="10" metro:ControlsHelper.ContentCharacterCasing="Normal"/>
         </Grid>
     </DockPanel>
 </metro:MetroWindow>

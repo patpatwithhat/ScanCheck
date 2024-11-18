@@ -1,5 +1,6 @@
 ﻿using ScanCheck.Core;
 using ScanCheck.Entities;
+using System.Drawing;
 using System.IO;
 
 namespace ScanCheck.Import
@@ -17,11 +18,17 @@ namespace ScanCheck.Import
 
             return Directory.GetFiles(folderPath)
                 .Where(file => fileExtensions.Contains(Path.GetExtension(file).ToLower()))
-                .Select(file => new ImageFile
+                .Select(file =>
                 {
-                    Path = file,
-                    Name = Path.GetFileNameWithoutExtension(file),
-                    Extension = Path.GetExtension(file).ToLower(),
+                    using var image = Image.FromFile(file);
+                    return new ImageFile
+                    {
+                        Path = file,
+                        Name = Path.GetFileNameWithoutExtension(file),
+                        Extension = Path.GetExtension(file).ToLower(),
+                        Width = image.Width,
+                        Height = image.Height,
+                    };
                 })
                 .ToList();
         }
