@@ -13,13 +13,16 @@ namespace ScanCheck.Converters
             if (values.Length == 3 &&
                 values[0] is double originalHeight &&
                 values[1] is double originalWidth &&
-                values[2] is double targetHeight)
+                values[2] is double targetHeight &&
+                originalHeight > 0)
             {
                 double aspectRatio = originalWidth / originalHeight;
-                return targetHeight * aspectRatio - Padding;
+                double calculatedWidth = targetHeight * aspectRatio - Padding;
+
+                return Math.Max(calculatedWidth, DefaultWidth);
             }
 
-            return DefaultWidth;
+            return DefaultWidth; // Fallback for invalid inputs
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

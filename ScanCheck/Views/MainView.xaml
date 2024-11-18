@@ -14,7 +14,6 @@
                    Width="800"
                    WindowStartupLocation="CenterScreen">
     <metro:MetroWindow.Resources>
-        <conv:EmptyStringToBooleanConverter x:Key="EmptyStringToBooleanConverter" Invert="False" />
         <conv:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter" Invert="False" UseHidden="False" />
         <contr:ScrollableImageGallery x:Key="ScrollableImageGallery" />
         <conv:AspectRatioToWidthConverter x:Key="AspectRatioToWidthConverter" />
