@@ -8,7 +8,7 @@ namespace ScanCheck
 {
     public class AppBootstrapper : BootstrapperBase
     {
-        private SimpleContainer container;
+        private SimpleContainer? container;
 
         public AppBootstrapper()
         {
@@ -27,19 +27,19 @@ namespace ScanCheck
             container.Singleton<ImageImporter>();
         }
 
-        protected override object GetInstance(Type service, string key)
+        protected override object? GetInstance(Type service, string key)
         {
-            return container.GetInstance(service, key);
+            return container?.GetInstance(service, key);
         }
 
-        protected override IEnumerable<object> GetAllInstances(Type service)
+        protected override IEnumerable<object>? GetAllInstances(Type service)
         {
-            return container.GetAllInstances(service);
+            return container?.GetAllInstances(service);
         }
 
         protected override void BuildUp(object instance)
         {
-            container.BuildUp(instance);
+            container?.BuildUp(instance);
         }
 
         protected override void OnStartup(object sender, StartupEventArgs e)

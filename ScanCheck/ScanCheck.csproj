@@ -10,7 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Assets\ScanCheckIcon.ico" />
+    <None Remove="Assets\ScanCheckIcon.png" />
+    <None Remove="Assets\SplashScreen.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,7 +21,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Assets\ScanCheckIcon.png">
+    <SplashScreen Include="Assets\SplashScreen.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\ScanCheckIcon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

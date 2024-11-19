@@ -89,11 +89,15 @@ namespace ScanCheck.ViewModels
             set { _infoText = value; NotifyOfPropertyChange(); }
         }
 
+        public string Version { get; private set; }
+
         #endregion
 
         public MainViewModel(ImageImporter imageImporter)
         {
             _imageImporter = imageImporter;
+            var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            Version = version != null ? $"v{version.Major}.{version.Minor}.{version.Build}" : string.Empty;
         }
 
         #region Button Actions
