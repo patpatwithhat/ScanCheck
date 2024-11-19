@@ -21,7 +21,7 @@ This tool is perfect for users who need a quick, no-frills way to handle visual 
 
 ## Installation
 
-You can use the MSI package to install it on your local computer.
+You can use the [MSI package](https://github.com/patpatwithhat/ScanCheck/releases) to install it on your local computer.
 
 **Or**
 
